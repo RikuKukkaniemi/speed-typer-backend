@@ -8,13 +8,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
-
-var validate = validator.New()
 
 var highscoreCollection *mongo.Collection = OpenCollection(Client, "highscores")
 
@@ -30,10 +27,7 @@ func AddHighscore(c *gin.Context) {
 		return
 	}
 
-	validationErr := validate.Struct(highscore)
-	if validationErr != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": validationErr.Error()})
-		fmt.Println(validationErr)
+	if !IsValid(highscore, c) {
 		return
 	}
 	highscore.ID = primitive.NewObjectID()
