@@ -30,7 +30,9 @@ func AddHighscore(c *gin.Context) {
 	if !IsValid(highscore, c) {
 		return
 	}
+
 	highscore.ID = primitive.NewObjectID()
+	highscore.Date = primitive.NewDateTimeFromTime(time.Now())
 
 	result, insertErr := highscoreCollection.InsertOne(ctx, highscore)
 	if insertErr != nil {
