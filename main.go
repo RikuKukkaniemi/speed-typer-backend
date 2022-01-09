@@ -17,12 +17,11 @@ func main() {
 
 	router := gin.Default()
 
-	router.GET("/highscores", routes.GetHighscores)
-	router.GET("wordLists/:language", routes.GetWordListByLanguage)
+	router.GET("/highscores/:amountOfHighscores", routes.GetHighscores)
+	router.GET("/wordLists/:language", routes.GetWordListByLanguage)
 
 	router.POST("/highscores", routes.AddHighscore)
 	router.POST("/wordLists", routes.AddWordList)
-
 
 	router.Run(":" + os.Getenv("PORT"))
 }

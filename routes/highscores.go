@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"rikukukkaniemi/speed-typer-backend/models"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -46,15 +47,21 @@ func AddHighscore(c *gin.Context) {
 	GetHighscores(c)
 }
 
-//get top 10 highscores
+//get highscores
 func GetHighscores(c *gin.Context) {
+	amount := c.Params.ByName("amountOfHighscores")
+	amountNumber, err := strconv.ParseInt(amount, 10, 64)
+	if err != nil {
+		panic(err)
+	}
+
 	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 
 	var highscores []bson.M
 
 	findOptions := options.Find()
 	findOptions.SetSort(bson.D{{"score", -1}})
-	findOptions.SetLimit(10)
+	findOptions.SetLimit(amountNumber)
 
 	cursor, err := highscoreCollection.Find(ctx, bson.M{}, findOptions)
 
