@@ -12,7 +12,7 @@ After cloning the project
 
 ## Create new Docker image
 
-`docker build tag speed-typer-backend:{VERSION.NUMBER} .`
+`docker build -t speed-typer-backend:{VERSION.NUMBER} .`
 
 ## Deploy to GCP
 
